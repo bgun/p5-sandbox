@@ -25,7 +25,7 @@ function setup() {
   // Hide the video element
   video.hide();
   facemesh.detectStart(video, gotFaces); // Start face detection on the video feed
-  textSize(50)
+  textSize(100)
 }
 
 // Draw function runs repeatedly, around 60 times per second by default
@@ -38,8 +38,8 @@ function draw() {
   for (let face of faces) {
     //image(video, face.rightEye[0].x-50, face.rightEye[0].y-50, 100, 100);
     //image(video, face.leftEye[0].x-50, face.leftEye[0].y-50, 100, 100);
-    text("😎", face.rightEye[0].x-20, face.rightEye[0].y+10);
-    text("😎", face.leftEye[0].x-40, face.leftEye[0].y+10);
+    text("😎", face.rightEye[0].x, face.rightEye[0].y);
+    text("😎", face.leftEye[0].x, face.leftEye[0].y);
   }
 }
 
