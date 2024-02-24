@@ -31,7 +31,7 @@ function setup() {
 // Draw function runs repeatedly, around 60 times per second by default
 function draw() {
   // Set background color to light gray (RGB: 220, 220, 220)
-  background(220);
+  background(50);
   // Display the video feed on the canvas
   image(video, 0, 0, width, height);
   
