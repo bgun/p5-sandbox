@@ -9,9 +9,11 @@
 let video; // Variable to store the video capture
 let facemesh; // Variable to store the ML5.js FaceMesh model
 let faces = []; // Array to store detected faces
+let frameImage;
 
 function preload() {
   facemesh = ml5.facemesh(); // Load the ML5.js FaceMesh model
+  frameImage = loadImage('frame.png');
 }
 
 // Setup function runs once at the beginning
@@ -21,19 +23,21 @@ function setup() {
   // Create a video capture object
   video = createCapture(VIDEO);
   // Set the size of the video capture to match the canvas size
-  video.size(width, height);
+  video.size(windowWidth, windowHeight);
   // Hide the video element
   video.hide();
   facemesh.detectStart(video, gotFaces); // Start face detection on the video feed
-  textSize(100)
+  textSize(50)
 }
 
 // Draw function runs repeatedly, around 60 times per second by default
 function draw() {
   // Set background color to light gray (RGB: 220, 220, 220)
-  background(50);
+  background(220);
   // Display the video feed on the canvas
-  image(video, 0, 0, width, height);
+  image(video, 0, 0, windowWidth, windowHeight);
+  filter(INVERT);
+  image(frameImage,0,0);
   
   for (let face of faces) {
     //image(video, face.rightEye[0].x-50, face.rightEye[0].y-50, 100, 100);
