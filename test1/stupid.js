@@ -17,7 +17,7 @@ function preload() {
 // Setup function runs once at the beginning
 function setup() {
   // Create a canvas of size 640x480 pixels
-  createCanvas(800, 1200);
+  createCanvas(windowWidth, windowHeight);
   // Create a video capture object
   video = createCapture(VIDEO);
   // Set the size of the video capture to match the canvas size
