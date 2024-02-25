@@ -9,8 +9,6 @@ let facebox;
 
 function preload() {
   facemesh = ml5.facemesh(); // Load the ML5.js FaceMesh model
-  frameImage = loadImage('frame.png');
-  //gif = createImg("squidanim.gif");
 }
 
 // Setup function runs once at the beginning
@@ -72,7 +70,7 @@ function draw() {
   */
 
   if(facebox) {
-    console.log("facebox", facebox.width, facebox.height);
+    //console.log("facebox", facebox.width, facebox.height);
     image(video, 0, 0, windowWidth, windowHeight, facebox.xMin-20, facebox.yMin-20, facebox.width+40, facebox.height+40);
   }
 
