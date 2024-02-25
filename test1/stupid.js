@@ -27,7 +27,7 @@ function setup() {
   facemesh.detectStart(video, gotFaces); // Start face detection on the video feed
   textSize(100);
    
-  var to_speak = new SpeechSynthesisUtterance('Hello world!');
+  //var to_speak = new SpeechSynthesisUtterance('Hello world!');
   //window.speechSynthesis.speak(to_speak);
 }
 
