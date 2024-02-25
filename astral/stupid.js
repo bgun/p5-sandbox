@@ -1,14 +1,18 @@
 let video; // Variable to store the video capture
 let facemesh; // Variable to store the ML5.js FaceMesh model
 let faces = []; // Array to store detected faces
-let frameImage;
+let frameImage, textTop, textBottom;
 let gif;
 let ratioW, ratioH;
 let predictions = [];
 let facebox;
+let faceshim = 10;
 
 function preload() {
   facemesh = ml5.facemesh(); // Load the ML5.js FaceMesh model
+  frameImage = loadImage('assets/blur-circle.png');
+  textTop    = loadImage('assets/text-astral.png');
+  textBottom = loadImage('assets/text-vibecheck.png');
 }
 
 // Setup function runs once at the beginning
@@ -35,7 +39,6 @@ function setup() {
 function draw() {
   // Display the video feed on the canvas
   //image(video, 0, 0, windowWidth, windowHeight, CONTAIN);
-  //image(frameImage,0,0);
 
   // Mirror the display
   translate(width,0);
@@ -71,14 +74,16 @@ function draw() {
 
   if(facebox) {
     //console.log("facebox", facebox.width, facebox.height);
-    image(video, 0, 0, windowWidth, windowHeight, facebox.xMin-20, facebox.yMin-20, facebox.width+40, facebox.height+40);
+    image(video, 0, 0, windowWidth, windowHeight, facebox.xMin-(faceshim), facebox.yMin-(faceshim), facebox.width+(faceshim*2), facebox.height+(faceshim*2));
   }
 
   filter(INVERT);
-  /*
-  filter(BLUR, 10);
+  filter(BLUR, 20);
   filter(POSTERIZE, 6);
-  */
+
+  image(frameImage,0,0,windowWidth, windowHeight);
+  image(textTop,   0,0,windowWidth, 300);
+  image(textBottom,0,windowHeight-300,windowWidth, 300);
 }
 
 // Callback function to handle face detection results
