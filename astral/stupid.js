@@ -8,16 +8,34 @@ let predictions = [];
 let facebox;
 let faceshim = 10;
 
+let showFlash = false;
+let showWait  = false;
+let showFinal = false;
+
+let vibes = [];
+let finalVibe;
+
 function preload() {
   facemesh = ml5.facemesh(); // Load the ML5.js FaceMesh model
   frameImage = loadImage('assets/blur-circle.png');
   textTop    = loadImage('assets/text-astral.png');
   textBottom = loadImage('assets/text-vibecheck.png');
+  textFlash  = loadImage('assets/text-checkingvibes.png');
+  textWait   = loadImage('assets/text-yourvibe.png');
+
+  // various vibes
+  vibeChill  = loadImage('assets/text-vibe-chill.png');
+  vibeCozy   = loadImage('assets/text-vibe-cozy.png');
+  vibeCursed = loadImage('assets/text-vibe-cursed.png');
+  vibeMysterious = loadImage('assets/text-vibe-mysterious.png');
+  vibeLowkey = loadImage('assets/text-vibe-lowkey.png');
+
+  vibes = [vibeChill, vibeCozy, vibeCursed, vibeMysterious, vibeLowkey];
 }
 
 // Setup function runs once at the beginning
 function setup() {
-  // Create a canvas of size 640x480 pixels
+  // Create a canvas the size of the window
   createCanvas(windowWidth, windowHeight);
   console.log("Window", width, height);
   // Create a video capture object
@@ -30,16 +48,32 @@ function setup() {
   //gif.position(50, 50);
   facemesh.detectStart(video, gotFaces); // Start face detection on the video feed
   textSize(100);
-   
-  //var to_speak = new SpeechSynthesisUtterance('Hello world!');
-  //window.speechSynthesis.speak(to_speak);
+
+  setTimeout(() => { showFlash = true;  }, 3000);
+  setTimeout(() => { showFlash = false; }, 3500);
+  setTimeout(() => { showFlash = true;  }, 4000);
+  setTimeout(() => { showFlash = false; }, 4500);
+  setTimeout(() => { showFlash = true;  }, 5000);
+  setTimeout(() => { showFlash = false; }, 5500);
+  setTimeout(() => { showFlash = true;  }, 6000);
+  setTimeout(() => { showFlash = false; }, 6500);
+
+  setTimeout(() => { showWait  = true; }, 7000);
+  setTimeout(() => { showWait  = false; }, 8500);
+
+  setTimeout(() => {
+    finalVibe = catchAVibe();
+    showFinal = true;
+  }, 9000);
 }
 
-// Draw function runs repeatedly, around 60 times per second by default
-function draw() {
-  // Display the video feed on the canvas
-  //image(video, 0, 0, windowWidth, windowHeight, CONTAIN);
+function catchAVibe() {
+  let numVibes = vibes.length;
+  let v = Math.floor(Math.random() * numVibes) + 1;
+  return vibes[v];
+}
 
+function draw() {
   // Mirror the display
   translate(width,0);
   scale(-1,1);
@@ -49,15 +83,6 @@ function draw() {
   ratioW = windowWidth / video.width;
   ratioH = windowHeight / video.height;
   
-  /*
-  for (let face of faces) {
-    image(video, face.rightEye[0].x-50, face.rightEye[0].y-50, 100, 100);
-    image(video, face.leftEye[0].x-50, face.leftEye[0].y-50, 100, 100);
-    //text("😎", face.rightEye[0].x * ratioW, face.rightEye[0].y * ratioH);
-    //text("😎", face.leftEye[0].x * ratioW,  face.leftEye[0].y * ratioH);
-  }
-  */
-
   /*
   // Show all keypoints as dots
   if(predictions) {
@@ -72,18 +97,31 @@ function draw() {
   }
   */
 
+  // use ml5 to pick out only the face and expand to fill the window
   if(facebox) {
-    //console.log("facebox", facebox.width, facebox.height);
     image(video, 0, 0, windowWidth, windowHeight, facebox.xMin-(faceshim), facebox.yMin-(faceshim), facebox.width+(faceshim*2), facebox.height+(faceshim*2));
   }
 
+  // playing with filters
   filter(INVERT);
   filter(BLUR, 20);
   filter(POSTERIZE, 6);
 
+  // add frame and words
   image(frameImage,0,0,windowWidth, windowHeight);
   image(textTop,   0,0,windowWidth, 300);
   image(textBottom,0,windowHeight-300,windowWidth, 300);
+
+  if (showFlash) {
+    image(textFlash,0,(windowHeight/2)-150,windowWidth, 300);
+  }
+  if (showWait) {
+    image(textWait,0,(windowHeight/2)-150,windowWidth, 300);
+  }
+
+  if (showFinal) {
+    image(finalVibe,0,(windowHeight/2)-150,windowWidth, 300);
+  }
 }
 
 // Callback function to handle face detection results
