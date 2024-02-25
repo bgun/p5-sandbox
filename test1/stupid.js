@@ -35,11 +35,15 @@ function setup() {
 
 // Draw function runs repeatedly, around 60 times per second by default
 function draw() {
-  background(200,0,0);
   // Display the video feed on the canvas
   //image(video, 0, 0, windowWidth, windowHeight, CONTAIN);
-  image(video, 0, 0, windowWidth, windowHeight);
   //image(frameImage,0,0);
+
+  // Mirror the display
+  translate(width,0);
+  scale(-1,1);
+
+  image(video, 0, 0, windowWidth, windowHeight);
 
   ratioW = windowWidth / video.width;
   ratioH = windowHeight / video.height;
@@ -53,11 +57,8 @@ function draw() {
   }
   */
 
-  if(facebox) {
-    image(video, 0, 0, windowWidth, windowHeight, facebox.xMin, facebox.yMin, facebox.width, facebox.height);
-  }
-
   /*
+  // Show all keypoints as dots
   if(predictions) {
     for (let i = 0; i < predictions.length; i += 1) {
       if(predictions[i]) {
@@ -69,8 +70,17 @@ function draw() {
     }
   }
   */
- 
+
+  if(facebox) {
+    console.log("facebox", facebox.width, facebox.height);
+    image(video, 0, 0, windowWidth, windowHeight, facebox.xMin-20, facebox.yMin-20, facebox.width+40, facebox.height+40);
+  }
+
   filter(INVERT);
+  /*
+  filter(BLUR, 10);
+  filter(POSTERIZE, 6);
+  */
 }
 
 // Callback function to handle face detection results
@@ -80,5 +90,4 @@ function gotFaces(results) {
     predictions = results[0].keypoints;
     facebox = results[0].box;
   }
-  console.log(results);
 }
