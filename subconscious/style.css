@@ -1,0 +1,14 @@
+html, body {
+  background: #000;
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+  max-width: 800px;
+  margin: 0 auto;
+}
+video {
+  border: 10px solid red;
+  border-radius: 100px;
+}
